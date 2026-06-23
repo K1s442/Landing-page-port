@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0d0d14;--bg2:#13131f;--bg3:#1c1c2e;--bg4:#22223a;
+    --accent:#7c6fef;--accent2:#b8acff;
+    --text:#f0f0ff;--text2:#c8c8e8;--muted:#9090b8;
+    --border:rgba(180,160,255,0.15);--border2:rgba(180,160,255,0.28);
+    --card:#16162a;--card2:#1e1e34;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;font-size:15px;-webkit-text-size-adjust:100%}
+
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:100;background:rgba(13,13,20,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border2);padding:0.65rem 1.5rem;display:flex;justify-content:space-between;align-items:center}
+  .logo{font-size:1rem;font-weight:800;color:var(--accent2);letter-spacing:0.02em}
+  .nav-links{display:flex;gap:1.2rem;list-style:none}
+  .nav-links a{color:var(--text2);text-decoration:none;font-size:0.85rem;font-weight:500;padding:0.25rem 0.45rem;border-radius:6px;transition:color .2s,background .2s}
+  .nav-links a:hover{color:var(--accent2);background:rgba(124,111,239,0.1)}
+  .nav-hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px}
+  .nav-hamburger span{display:block;width:22px;height:2px;background:var(--text2);border-radius:2px;transition:all .3s}
+  .mobile-menu{display:none;flex-direction:column;gap:0;background:var(--bg2);border-bottom:1px solid var(--border2)}
+  .mobile-menu a{color:var(--text2);text-decoration:none;padding:0.85rem 1.5rem;font-size:0.95rem;font-weight:500;border-bottom:1px solid var(--border);transition:color .2s,background .2s}
+  .mobile-menu a:hover{color:var(--accent2);background:rgba(124,111,239,0.07)}
+  .mobile-menu.open{display:flex}
+
+  /* HERO */
+  .hero{padding:2.5rem 1.5rem 2rem;position:relative;overflow:hidden}
+  .hero-glow{position:absolute;top:-80px;right:-80px;width:350px;height:350px;background:radial-gradient(circle,rgba(124,111,239,0.1) 0%,transparent 65%);pointer-events:none}
+  .hero-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(124,111,239,0.14);border:1px solid rgba(180,160,255,0.3);color:var(--accent2);padding:0.28rem 0.85rem;border-radius:999px;font-size:0.78rem;font-weight:500;margin-bottom:1rem;width:fit-content}
+  .dot{width:6px;height:6px;background:#5ddc8a;border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  .hero h1{font-size:clamp(1.9rem,6vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:0.3rem}
+  .highlight{background:linear-gradient(135deg,#a78bfa,#c4b5fd,#e0d9ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-role{font-size:clamp(0.95rem,2.5vw,1.1rem);font-weight:600;color:var(--muted);margin-bottom:0.8rem}
+  .hero-role span{color:var(--accent2)}
+  .hero-desc{font-size:clamp(0.88rem,2vw,0.97rem);color:var(--text2);max-width:520px;margin-bottom:1.4rem;line-height:1.72}
+  .hero-btns{display:flex;gap:0.7rem;flex-wrap:wrap;margin-bottom:1.8rem}
+  .btn-primary{background:var(--accent);color:#fff;border:none;padding:0.62rem 1.4rem;border-radius:9px;font-size:0.88rem;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(124,111,239,0.28)}
+  .btn-primary:hover{background:#9080f5;transform:translateY(-2px)}
+  .btn-outline{background:transparent;color:var(--text2);border:1px solid var(--border2);padding:0.62rem 1.4rem;border-radius:9px;font-size:0.88rem;font-weight:500;cursor:pointer;transition:all .2s}
+  .btn-outline:hover{border-color:var(--accent2);color:var(--accent2)}
+  .stats-row{display:flex;gap:0.65rem;flex-wrap:wrap}
+  .stat-item{display:flex;flex-direction:column;padding:0.65rem 1rem;background:var(--card);border:1px solid var(--border2);border-radius:10px;min-width:80px;flex:1}
+  .stat-num{font-size:1.3rem;font-weight:800;color:var(--accent2);line-height:1}
+  .stat-label{font-size:0.68rem;color:var(--muted);margin-top:0.18rem}
+
+  .sep{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent)}
+
+  /* SECTIONS */
+  section{padding:2.2rem 1.5rem}
+  .section-eyebrow{font-size:0.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.35rem}
+  .section-title{font-size:clamp(1.3rem,3.5vw,1.85rem);font-weight:800;color:var(--text);margin-bottom:0.45rem;letter-spacing:-0.02em}
+  .section-sub{font-size:clamp(0.85rem,2vw,0.93rem);color:var(--text2);max-width:480px;line-height:1.65;margin-bottom:1.5rem}
+
+  /* SKILLS */
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.7rem}
+  .skill-card{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:1rem 0.9rem;transition:all .22s;cursor:default}
+  .skill-card:hover{border-color:var(--accent2);background:var(--card2);transform:translateY(-3px)}
+  .skill-emoji{font-size:1.5rem;margin-bottom:0.45rem;display:block}
+  .skill-name{font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:0.12rem}
+  .skill-level-label{font-size:0.7rem;color:var(--muted);margin-bottom:0.55rem}
+  .skill-bar{height:3px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden}
+  .skill-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px}
+
+  .about-strip{background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:1.1rem 1.25rem;margin-top:1.25rem;display:grid;grid-template-columns:repeat(2,1fr);gap:0.85rem}
+  .about-label{font-size:0.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:0.15rem}
+  .about-value{font-size:0.85rem;font-weight:600;color:var(--text)}
+
+  /* PROJECTS */
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+  .proj-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;overflow:hidden;transition:all .22s}
+  .proj-card:hover{border-color:var(--accent2);transform:translateY(-4px);box-shadow:0 10px 28px rgba(124,111,239,0.13)}
+  .proj-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden}
+  .proj-thumb-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--card) 100%)}
+  .proj-body{padding:0.9rem 1rem 1rem}
+  .proj-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.55rem}
+  .tag{font-size:0.66rem;font-weight:600;background:rgba(124,111,239,0.14);color:var(--accent2);padding:0.16rem 0.5rem;border-radius:999px;border:1px solid rgba(180,160,255,0.2)}
+  .proj-name{font-size:0.97rem;font-weight:800;color:var(--text);margin-bottom:0.3rem}
+  .proj-desc{font-size:0.82rem;color:var(--text2);line-height:1.58;margin-bottom:0.9rem}
+  .proj-links{display:flex;gap:0.6rem}
+  .proj-link{font-size:0.78rem;font-weight:600;color:var(--accent2);background:none;border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;gap:0.28rem;padding:0.32rem 0.65rem;border-radius:7px;transition:all .2s;text-decoration:none}
+  .proj-link:hover{background:rgba(124,111,239,0.12);border-color:var(--accent2)}
+
+  /* CONTACT */
+  .contact-wrap{display:grid;grid-template-columns:1fr 1.6fr;gap:1.25rem;align-items:start}
+  .contact-info{display:flex;flex-direction:column;gap:0.6rem}
+  .contact-info-item{background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:0.72rem 0.9rem;display:flex;align-items:center;gap:0.65rem}
+  .contact-icon{font-size:1rem}
+  .contact-detail-label{font-size:0.66rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.07em}
+  .contact-detail-value{font-size:0.84rem;color:var(--text2);font-weight:500}
+  .contact-box{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:1.35rem}
+  .form-group{margin-bottom:0.78rem}
+  .form-label{display:block;font-size:0.76rem;font-weight:600;color:var(--text2);margin-bottom:0.32rem}
+  .form-input,.form-textarea{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:0.58rem 0.85rem;font-size:0.88rem;font-family:inherit;outline:none;transition:border-color .2s;-webkit-appearance:none}
+  .form-input::placeholder,.form-textarea::placeholder{color:var(--muted)}
+  .form-input:focus,.form-textarea:focus{border-color:var(--accent)}
+  .form-textarea{resize:vertical;min-height:85px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem}
+
+  footer{border-top:1px solid var(--border2);padding:1.1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:0.8rem;flex-wrap:wrap;gap:0.6rem}
+  footer span{color:var(--accent2);font-weight:600}
+  .footer-links{display:flex;gap:1rem}
+  .footer-links a{color:var(--muted);text-decoration:none;font-size:0.78rem;transition:color .2s}
+  .footer-links a:hover{color:var(--accent2)}
+
+  /* TABLET */
+  @media(max-width:768px){
+    .about-strip{grid-template-columns:1fr 1fr}
+    .contact-wrap{grid-template-columns:1fr}
+    .contact-info{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem}
+    .form-row{grid-template-columns:1fr 1fr}
+  }
+
+  /* MOBILE */
+  @media(max-width:520px){
+    .nav-links{display:none}
+    .nav-hamburger{display:flex}
+    .hero{padding:2rem 1.1rem 1.8rem}
+    section{padding:1.8rem 1.1rem}
+    .hero-btns{flex-direction:column}
+    .btn-primary,.btn-outline{width:100%;text-align:center;padding:0.75rem}
+    .stats-row{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+    .stat-item{min-width:unset}
+    .skills-grid{grid-template-columns:repeat(2,1fr)}
+    .about-strip{grid-template-columns:1fr}
+    .projects-grid{grid-template-columns:1fr}
+    .contact-wrap{grid-template-columns:1fr}
+    .contact-info{display:flex;flex-direction:column;gap:0.5rem}
+    .form-row{grid-template-columns:1fr}
+    footer{flex-direction:column;text-align:center;gap:0.5rem}
+    .footer-links{justify-content:center}
+  }
+
+  /* LARGE DESKTOP */
+  @media(min-width:1200px){
+    .hero,.nav,section,footer{padding-left:4rem;padding-right:4rem}
+    .projects-grid{grid-template-columns:repeat(3,1fr)}
+    .skills-grid{grid-template-columns:repeat(6,1fr)}
+    .about-strip{grid-template-columns:repeat(4,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">KM&lt;/&gt;</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="document.querySelector('.hero').scrollIntoView({behavior:'smooth'});return false;">Início</a></li>
+    <li><a href="#" onclick="document.getElementById('skills').scrollIntoView({behavior:'smooth'});return false;">Skills</a></li>
+    <li><a href="#" onclick="document.getElementById('projetos').scrollIntoView({behavior:'smooth'});return false;">Projetos</a></li>
+    <li><a href="#" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'});return false;">Contato</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="closeMenu();document.querySelector('.hero').scrollIntoView({behavior:'smooth'});return false;">Início</a>
+  <a href="#" onclick="closeMenu();document.getElementById('skills').scrollIntoView({behavior:'smooth'});return false;">Skills</a>
+  <a href="#" onclick="closeMenu();document.getElementById('projetos').scrollIntoView({behavior:'smooth'});return false;">Projetos</a>
+  <a href="#" onclick="closeMenu();document.getElementById('contato').scrollIntoView({behavior:'smooth'});return false;">Contato</a>
+</div>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge"><div class="dot"></div> Disponível para freelas</div>
+  <h1>Olá, eu sou<br><span class="highlight">Kayky de Mello</span></h1>
+  <p class="hero-role">Desenvolvedor <span>Front-End</span></p>
+  <p class="hero-desc">Crio interfaces modernas e responsivas com foco na experiência do usuário. Transformo ideias em páginas que funcionam de verdade.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('projetos').scrollIntoView({behavior:'smooth'})">🚀 Ver projetos</button>
+    <button class="btn-outline" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">💬 Fale comigo</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-item"><span class="stat-num">3+</span><span class="stat-label">Projetos</span></div>
+    <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Tecnologias</span></div>
+    <div class="stat-item"><span class="stat-num">RJ</span><span class="stat-label">Rio de Janeiro</span></div>
+    <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label">Dedicação</span></div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<section id="skills">
+  <div class="section-eyebrow">// habilidades</div>
+  <h2 class="section-title">O que eu sei fazer</h2>
+  <p class="section-sub">Tecnologias que uso para construir interfaces rápidas e responsivas em qualquer dispositivo.</p>
+  <div class="skills-grid">
+    <div class="skill-card"><span class="skill-emoji">🌐</span><div class="skill-name">HTML5</div><div class="skill-level-label">Intermediário</div><div class="skill-bar"><div class="skill-bar-fill" style="width:75%"></div></div></div>
+    <div class="skill-card"><span class="skill-emoji">🎨</span><div class="skill-name">CSS3</div><div class="skill-level-label">Intermediário</div><div class="skill-bar"><div class="skill-bar-fill" style="width:72%"></div></div></div>
+    <div class="skill-card"><span class="skill-emoji">⚡</span><div class="skill-name">JavaScript</div><div class="skill-level-label">Intermediário</div><div class="skill-bar"><div class="skill-bar-fill" style="width:65%"></div></div></div>
+    <div class="skill-card"><span class="skill-emoji">📱</span><div class="skill-name">Responsivo</div><div class="skill-level-label">Bom domínio</div><div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+    <div class="skill-card"><span class="skill-emoji">🔧</span><div class="skill-name">Git & GitHub</div><div class="skill-level-label">Básico</div><div class="skill-bar"><div class="skill-bar-fill" style="width:50%"></div></div></div>
+    <div class="skill-card"><span class="skill-emoji">🎯</span><div class="skill-name">UI Design</div><div class="skill-level-label">Básico</div><div class="skill-bar"><div class="skill-bar-fill" style="width:45%"></div></div></div>
+  </div>
+  <div class="about-strip">
+    <div><div class="about-label">📍 Localização</div><div class="about-value">Rio de Janeiro, RJ</div></div>
+    <div><div class="about-label">💼 Disponibilidade</div><div class="about-value">Freelas & Projetos</div></div>
+    <div><div class="about-label">🕐 Experiência</div><div class="about-value">Nível Intermediário</div></div>
+    <div><div class="about-label">🌎 Idiomas</div><div class="about-value">PT · EN básico</div></div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<section id="projetos">
+  <div class="section-eyebrow">// projetos</div>
+  <h2 class="section-title">O que já construí</h2>
+  <p class="section-sub">Projetos feitos com HTML, CSS e JavaScript — cada um resolvendo um problema real.</p>
+  <div class="projects-grid">
+    <div class="proj-card">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#1a0a3a,#2d1b6e)">🛒<div class="proj-thumb-overlay"></div></div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+        <div class="proj-name">Landing Page de Vendas</div>
+        <div class="proj-desc">Página de conversão com formulário funcional, animações e design responsivo para mobile.</div>
+        <div class="proj-links"><a class="proj-link" href="#">🔗 Demo</a><a class="proj-link" href="#">📂 GitHub</a></div>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#0a1a3a,#0d2d6e)">🌤️<div class="proj-thumb-overlay"></div></div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span><span class="tag">API</span></div>
+        <div class="proj-name">App de Clima</div>
+        <div class="proj-desc">Consome a API OpenWeatherMap em tempo real. Busca por cidade, temperatura e previsão.</div>
+        <div class="proj-links"><a class="proj-link" href="#">🔗 Demo</a><a class="proj-link" href="#">📂 GitHub</a></div>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-thumb" style="background:linear-gradient(135deg,#1a0a2e,#3d1a6e)">✅<div class="proj-thumb-overlay"></div></div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+        <div class="proj-name">Lista de Tarefas</div>
+        <div class="proj-desc">To-do list com localStorage, filtro por status e interface limpa e intuitiva.</div>
+        <div class="proj-links"><a class="proj-link" href="#">🔗 Demo</a><a class="proj-link" href="#">📂 GitHub</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<section id="contato">
+  <div class="section-eyebrow">// contato</div>
+  <h2 class="section-title">Vamos trabalhar juntos?</h2>
+  <p class="section-sub">Tem um projeto em mente? Me manda uma mensagem!</p>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <div class="contact-info-item"><span class="contact-icon">📧</span><div><div class="contact-detail-label">E-mail</div><div class="contact-detail-value">kayky@email.com</div></div></div>
+      <div class="contact-info-item"><span class="contact-icon">💼</span><div><div class="contact-detail-label">LinkedIn</div><div class="contact-detail-value">linkedin.com/in/kayky</div></div></div>
+      <div class="contact-info-item"><span class="contact-icon">🐙</span><div><div class="contact-detail-label">GitHub</div><div class="contact-detail-value">github.com/kayky</div></div></div>
+      <div class="contact-info-item"><span class="contact-icon">📍</span><div><div class="contact-detail-label">Localização</div><div class="contact-detail-value">Rio de Janeiro, RJ</div></div></div>
+    </div>
+    <div class="contact-box">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Nome</label><input type="text" class="form-input" placeholder="Seu nome"></div>
+        <div class="form-group"><label class="form-label">E-mail</label><input type="email" class="form-input" placeholder="seu@email.com"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Assunto</label><input type="text" class="form-input" placeholder="Ex: Quero um site para meu negócio"></div>
+      <div class="form-group"><label class="form-label">Mensagem</label><textarea class="form-textarea" placeholder="Olá Kayky! Tenho um projeto de..."></textarea></div>
+      <button class="btn-primary" style="width:100%;font-size:0.92rem;padding:0.72rem">🚀 Enviar mensagem</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Feito com 💜 por <span>Kayky de Mello Monteiro</span> · Rio de Janeiro</p>
+  <div class="footer-links">
+    <a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">Workana</a>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu(){
+    document.getElementById('mobileMenu').classList.toggle('open')
+  }
+  function closeMenu(){
+    document.getElementById('mobileMenu').classList.remove('open')
+  }
+</script>
+</body>
+</html>
