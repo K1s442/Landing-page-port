@@ -256,14 +256,30 @@
       <div class="contact-info-item"><span class="contact-icon">🐙</span><div><div class="contact-detail-label">GitHub</div><div class="contact-detail-value">github.com/kayky</div></div></div>
       <div class="contact-info-item"><span class="contact-icon">📍</span><div><div class="contact-detail-label">Localização</div><div class="contact-detail-value">Rio de Janeiro, RJ</div></div></div>
     </div>
+
+    <!-- FORMULÁRIO DE CONTATO MODIFICADO -->
     <div class="contact-box">
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Nome</label><input type="text" class="form-input" placeholder="Seu nome"></div>
-        <div class="form-group"><label class="form-label">E-mail</label><input type="email" class="form-input" placeholder="seu@email.com"></div>
+        <div class="form-group">
+          <label class="form-label">Nome</label>
+          <input type="text" class="form-input" id="nome" placeholder="Seu nome">
+        </div>
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <input type="email" class="form-input" id="email" placeholder="seu@email.com">
+        </div>
       </div>
-      <div class="form-group"><label class="form-label">Assunto</label><input type="text" class="form-input" placeholder="Ex: Quero um site para meu negócio"></div>
-      <div class="form-group"><label class="form-label">Mensagem</label><textarea class="form-textarea" placeholder="Olá Kayky! Tenho um projeto de..."></textarea></div>
-      <button class="btn-primary" style="width:100%;font-size:0.92rem;padding:0.72rem">🚀 Enviar mensagem</button>
+      <div class="form-group">
+        <label class="form-label">Assunto</label>
+        <input type="text" class="form-input" id="assunto" placeholder="Ex: Quero um site para meu negócio">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mensagem</label>
+        <textarea class="form-textarea" id="mensagem" placeholder="Olá Kayky! Tenho um projeto de..."></textarea>
+      </div>
+      <button class="btn-primary" onclick="enviarWhatsApp()" style="width:100%;font-size:0.92rem;padding:0.72rem">
+        🚀 Enviar mensagem
+      </button>
     </div>
   </div>
 </section>
@@ -281,6 +297,31 @@
   }
   function closeMenu(){
     document.getElementById('mobileMenu').classList.remove('open')
+  }
+
+  // ========== FUNÇÃO PARA ENVIAR AO WHATSAPP ==========
+  function enviarWhatsApp() {
+    const nome = document.getElementById('nome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const assunto = document.getElementById('assunto').value.trim();
+    const mensagem = document.getElementById('mensagem').value.trim();
+
+    if (!nome || !email || !assunto || !mensagem) {
+      alert('Por favor, preencha todos os campos antes de enviar.');
+      return;
+    }
+
+    const texto = 
+      `Olá Kayky! 👋\n\n` +
+      `*Nome:* ${nome}\n` +
+      `*E-mail:* ${email}\n` +
+      `*Assunto:* ${assunto}\n` +
+      `*Mensagem:* ${mensagem}\n\n` +
+      `Enviado pelo seu portfólio.`;
+
+    const numero = '5521996208182';
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+    window.open(url, '_blank');
   }
 </script>
 </body>
